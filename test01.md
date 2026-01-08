@@ -1,4 +1,4 @@
-# TQC Java 模擬試題 (Test01)
+# TQC Java Mock Exam (Test01)
 
 這是一份模擬 TQC 風格的 Java 試題，旨在測試您的基礎程式設計、邏輯、演算法以及物件導向設計能力。
 
@@ -9,29 +9,29 @@
 #### 題目說明
 請編寫一個程式，提示使用者輸入他們的身高（單位：公尺）和體重（單位：公斤）。程式需計算其身體質量指數（BMI），並根據以下標準印出對應的健康評級。
 
-**BMI 計算公式**: `體重 (kg) / (身高 (m) * 身高 (m))`
+**BMI 計算公式**: `Weight (kg) / (Height (m) * Height (m))`
 
 **評級標準**:
-- BMI < 18.5: "體重過輕 (Underweight)"
-- 18.5 <= BMI < 24: "體重正常 (Normal)"
-- BMI >= 24: "體重過重 (Overweight)"
+- BMI < 18.5: "Underweight"
+- 18.5 <= BMI < 24: "Normal"
+- BMI >= 24: "Overweight"
 
 #### 要求
 1. 程式需包含一個名為 `calculateAndRateBMI` 的靜態方法，該方法接收身高和體重作為參數，並回傳一個包含評級結果的字串。
 2. 在 `main` 方法中，呼叫 `calculateAndRateBMI` 方法並印出結果。
-3. 需處理不合法的輸入（例如，身高或體重為零或負數），若輸入不合法，應回傳 "輸入無效 (Invalid Input)"。
+3. 需處理不合法的輸入（例如，身高或體重為零或負數），若輸入不合法，應回傳 "Invalid Input"。
 4. BMI 計算結果保留小數點後兩位。
 
 #### 輸出範例
 ```
-請輸入您的身高（公尺）: 1.75
-請輸入您的體重（公斤）: 68
-您的 BMI 指數為 22.22，評級為：體重正常 (Normal)
+Please enter your height (meters): 1.75
+Please enter your weight (kilograms): 68
+Your BMI is 22.22, rating: Normal
 ```
 ```
-請輸入您的身高（公尺）: -1.75
-請輸入您的體重（公斤）: 68
-輸入無效 (Invalid Input)
+Please enter your height (meters): -1.75
+Please enter your weight (kilograms): 68
+Invalid Input
 ```
 
 ---
@@ -49,10 +49,10 @@
 
 #### 輸出範例
 ```
-請輸入基數: 3
-請輸入指數: 4
-使用迴圈計算 (3^4) = 81
-使用遞迴計算 (3^4) = 81
+Please enter base: 3
+Please enter exponent: 4
+Calculated using loop (3^4) = 81
+Calculated using recursion (3^4) = 81
 ```
 
 ---
@@ -65,13 +65,13 @@
 #### 要求
 
 1.  **建立一個 `Package` 抽象類別**:
-    -   擁有 `protected` 屬性：`trackingNumber` (字串, 追蹤號碼) 和 `weight` (double, 重量 kg)。
+    -   擁有 `protected` 屬性：`trackingNumber` (String, 追蹤號碼) 和 `weight` (double, 重量 kg)。
     -   擁有一個建構子來初始化這些屬性。
     -   擁有一個 `public abstract double calculateCost()` 抽象方法，用於計算費用。
 
 2.  **建立 `StandardPackage` 類別**:
     -   繼承自 `Package`。
-    -   運費計算方式為：`重量 * 3.5` (每公斤 3.5 元)。
+    -   運費計算方式為：`weight * 3.5` (每公斤 3.5 元)。
     -   實作 `calculateCost()` 方法。
 
 3.  **建立 `ExpressPackage` 類別**:
@@ -99,6 +99,6 @@
 
 #### 輸出範例 (數值可能因您的實作而異)
 ```
-所有包裹的總收益為: 156.5
-最重的包裹是: T003，重量為: 25.0 kg
+Total revenue for all packages: 156.5
+Heaviest package: T003, weight: 25.0 kg
 ```
