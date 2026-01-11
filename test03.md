@@ -57,7 +57,7 @@
             int sum = 0;
             for (int i = 1; i <= 10; i++) {
                 // TODO: 將 i 的值累加到 sum 中
-                sum += i;
+                __________;
             }
             System.out.println("The sum is: " + sum);
         }
@@ -67,7 +67,7 @@
 2.  `sealed` 關鍵字用於限制類別的繼承。請完成以下程式碼，使 `Car` 和 `Bike` 類別可以合法地繼承 `Vehicle` 類別。
     ```java
     // TODO: 使用 sealed 關鍵字，並允許 Car 和 Bike 繼承
-    public abstract sealed class Vehicle permits Car, Bike {} 
+    public abstract __________ Vehicle {}
 
     // Car 和 Bike 是 final 的，不能再被繼承
     final class Car extends Vehicle {}
@@ -100,93 +100,3 @@
     *   呼叫 `findBookByTitle()` 方法來尋找一本存在的書和一本不存在的書，並將結果印出。
 
 **請撰寫完整的 `Book` record、`Library` 類別以及用於測試的 `Main` 類別程式碼。**
-
----
-### 參考解答
-
-#### 第一部分：選擇題
-1. (D)
-2. (B)
-3. (C)
-4. (A)
-
-#### 第二部分：程式填充
-1. `sum += i;`
-2. `sealed class Vehicle permits Car, Bike`
-
-#### 第三部分：程式設計題
-```java
-// Book.java
-public record Book(String title, String author) {
-}
-
-// Library.java
-import java.util.ArrayList;
-import java.util.List;
-
-public class Library {
-    private final List<Book> books = new ArrayList<>();
-
-    public void addBook(Book book) {
-        books.add(book);
-    }
-
-    public Book findBookByTitle(String title) {
-        for (Book book : books) {
-            if (book.title().equalsIgnoreCase(title)) {
-                return book;
-            }
-        }
-        return null;
-    }
-
-    public void printAllBooks() {
-        System.out.println("All Books in Library:");
-        for (Book book : books) {
-            System.out.println("- Title: " + book.title() + ", Author: " + book.author());
-        }
-    }
-}
-
-// Main.java
-public class Main {
-    public static void main(String[] args) {
-        // 1. 建立 Library 物件
-        Library myLibrary = new Library();
-
-        // 2. 建立並新增 Book 物件
-        Book book1 = new Book("Effective Java", "Joshua Bloch");
-        Book book2 = new Book("Clean Code", "Robert C. Martin");
-        Book book3 = new Book("Java: A Beginner's Guide", "Herbert Schildt");
-
-        myLibrary.addBook(book1);
-        myLibrary.addBook(book2);
-        myLibrary.addBook(book3);
-
-        System.out.println("---");
-
-        // 3. 顯示所有館藏
-        myLibrary.printAllBooks();
-
-        System.out.println("\n---");
-
-        // 4. 尋找書籍
-        System.out.println("Searching for 'Clean Code':");
-        Book foundBook = myLibrary.findBookByTitle("Clean Code");
-        if (foundBook != null) {
-            System.out.println("Found: " + foundBook);
-        } else {
-            System.out.println("Book not found.");
-        }
-
-        System.out.println("\nSearching for 'Design Patterns':");
-        Book notFoundBook = myLibrary.findBookByTitle("Design Patterns");
-        if (notFoundBook != null) {
-            System.out.println("Found: " + notFoundBook);
-        } else {
-            System.out.println("Book not found.");
-        }
-        System.out.println("---");
-    }
-}
-```
