@@ -1,6 +1,10 @@
-
-*
-
 !.gitignore
+
 !know.md
 !test*.md
+
+.idea/
+*.iml
+
+# java
+*.class
