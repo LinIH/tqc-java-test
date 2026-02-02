@@ -1,0 +1,6 @@
+// TODO: 使用 sealed 關鍵字，並允許 Car 和 Bike 繼承
+public abstract class Vehicle {}
+
+// Car 和 Bike 是 final 的，不能再被繼承
+final class Car extends Vehicle {}
+final class Bike extends Vehicle {}
