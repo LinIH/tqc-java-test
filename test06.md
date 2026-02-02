@@ -1,63 +1,148 @@
-# TQC+ Java 17 物件導向程式設計 (專業級) 練習題方向
+# TQC+ Java 17 物件導向程式設計 - 實戰練習題
 
-本文根據網路上的資源，包含官方範例試卷與前輩們的經驗分享，整理出 TQC+ Java 17 物件導向程式設計（專業級）術科考試的常見題型與準備方向。
+這份文件包含三道專為練習 Java 物件導向程式設計而設計的題目，涵蓋了類別設計、繼承與多型、介面等核心觀念。請依照題目說明完成程式碼。
 
-## 考試題型概述
+---
 
-TQC+ 的術科考試通常分為數個**類別 (Category)**，每個類別都專注於一個特定的物件導向或Java核心主題。您需要在指定的類別中，根據題目要求完成或修改Java類別。
+## 第一題：網路商店商品類別設計
 
-考試系統會提供一個專案結構，您需要做的就是將規定的邏輯填入對應的 `.java` 檔案中。評分是基於您的程式是否能通過一系列的單元測試。
+### 題目說明
 
-## 常見的練習題類別與方向
+請設計一個網路商店的商品 (`Product`) 類別，該類別需要儲存商品的各項資訊，並提供方法來管理庫存。
 
-以下是根據過往經驗和範例試卷歸納出的主要測驗方向：
+### 實作要求
 
-### 第一類：基礎類別實作與資料處理
+1.  **建立 `Product.java` 檔案。**
+2.  在檔案中定義一個公開 (`public`) 的 `Product` 類別。
+3.  類別應包含以下 **私有 (`private`)** 屬性：
+    *   `productId`: 商品編號 (型別 `String`)
+    *   `name`: 商品名稱 (型別 `String`)
+    *   `price`: 商品價格 (型別 `int`)
+    *   `stock`: 商品庫存 (型別 `int`)
+4.  **建構子 (Constructor)**：
+    *   提供一個公開的建構子，需傳入商品編號、名稱、價格和庫存，並在建構子中完成屬性的初始化。
+5.  **公開方法 (Public Methods)**：
+    *   `sell(int quantity)`: 銷售方法。
+        *   如果 `quantity` 小於或等於目前的 `stock`，則將 `stock` 減去 `quantity` 並回傳 `true`。
+        *   如果 `quantity` 大於目前的 `stock`，庫存不變，並回傳 `false`。
+    *   `getInfo()`: 取得商品資訊。
+        *   回傳一個格式化的字串，格式為 `"ID: [productId], Name: [name], Price: $[price], Stock: [stock] units"`。
+    *   為所有屬性（`productId`, `name`, `price`, `stock`）提供 Getter 方法，例如 `getProductId()`。
 
-*   **核心觀念：** 類別定義、建構子 (Constructor)、Getter/Setter 方法、基本資料型態與字串操作。
-*   **練習方向：**
-    *   設計一個簡單的類別（如 `Student`, `Product`），包含數個私有屬性 (private fields)。
-    *   實作多載 (overloading) 的建構子。
-    *   提供公開的 (public) Getter 和 Setter 方法來存取與修改屬性。
-    *   練習字串的分割 (`split`)、取代 (`replace`) 與格式化 (`String.format`)。
+### 測試範例
 
-### 第二類：繼承 (Inheritance) 與多型 (Polymorphism)
+您可以建立一個 `Main.java` 來測試您的 `Product` 類別。
 
-*   **核心觀念：** 類別繼承 (`extends`)、方法覆寫 (`@Override`)、`super` 關鍵字、父類別引用指向子類別物件。
-*   **練習方向：**
-    *   定義一個基礎類別 (Base Class)，例如 `Employee`。
-    *   建立數個繼承自基礎類別的子類別 (Subclass)，例如 `Manager`, `HourlyWorker`。
-    *   在子類別中覆寫父類別的方法，以實作不同的行為（例如計算薪水的方法）。
-    *   練習使用 `instanceof` 運算子來判斷物件的真實型態。
+```java
+// Main.java (for testing)
+public class Main {
+    public static void main(String[] args) {
+        Product laptop = new Product("P001", "Gaming Laptop", 45000, 10);
+        System.out.println(laptop.getInfo()); // ID: P001, Name: Gaming Laptop, Price: $45000, Stock: 10 units
 
-### 第三類：介面 (Interface) 與抽象類別 (Abstract Class)
+        boolean success = laptop.sell(3);
+        System.out.println("Sale successful: " + success); // Sale successful: true
+        System.out.println(laptop.getInfo()); // ID: P001, Name: Gaming Laptop, Price: $45000, Stock: 7 units
 
-*   **核心觀念：** `interface` 的定義與實作 (`implements`)、`abstract class` 的使用、介面的多重實作。
-*   **練習方向：**
-    *   定義一個介面（如 `Payable`），包含計算費用的抽象方法。
-    *   讓不同的類別實作此介面。
-    *   定義一個抽象類別（如 `Shape`），包含抽象方法 `getArea()` 和非抽象方法，並讓子類別繼承它。
+        success = laptop.sell(8);
+        System.out.println("Sale successful: " + success); // Sale successful: false
+        System.out.println(laptop.getInfo()); // ID: P001, Name: Gaming Laptop, Price: $45000, Stock: 7 units
+    }
+}
+```
 
-### 第四類：例外處理 (Exception Handling)
+---
 
-*   **核心觀念：** `try-catch-finally` 區塊、`throw` 與 `throws` 關鍵字、自訂例外類別。
-*   **練習方向：**
-    *   練習在方法中使用 `try-catch` 來捕捉可能發生的標準例外（如 `NumberFormatException`, `IOException`）。
-    *   設計一個繼承自 `Exception` 的自訂例外類別（如 `InsufficientFundsException`）。
-    *   在適當的時機點 `throw` 這個自訂例外。
+## 第二題：員工薪資計算（繼承與多型）
 
-### 第五類：Java 集合框架 (Collections Framework)
+### 題目說明
 
-*   **核心觀念：** `List` (特別是 `ArrayList`)、`Map` (特別是 `HashMap`) 的使用、泛型 (Generics)。
-*   **練習方向：**
-    *   使用 `ArrayList` 來儲存和管理一組物件。練習新增、刪除、遍歷 (iterate) list 中的元素。
-    *   使用 `HashMap` 來儲存鍵值對 (key-value pairs)。
-    *   練習搭配泛型來確保集合的型態安全。
+某公司有兩種類型的員工：月薪制員工 (`SalaryWorker`) 和時薪制員工 (`HourlyWorker`)。請使用「繼承」來設計一個薪資計算系統。
 
-## 準備建議
+### 實作要求
 
-1.  **熟悉IDE操作：** 考試時通常會在指定的整合開發環境 (IDE) 中進行，請務必熟悉基本操作。
-2.  **詳讀題目說明：** 題目會詳細說明類別名稱、方法名稱、參數型態與回傳值，請嚴格遵守，因為評分系統是大小寫敏感的。
-3.  **從官方範例著手：** 前往 TQC+ 官網下載最新的 Java 17 範例試卷，實際操作一遍，是最好的準備方式。
+1.  **建立 `Employee.java` (父類別)**
+    *   定義為一個 `abstract` 抽象類別。
+    *   包含 **保護 (`protected`)** 屬性 `name` (姓名, `String`)。
+    *   提供一個建構子來初始化 `name`。
+    *   包含一個 `abstract` 抽象方法 `calculateSalary()`，回傳薪資（型別 `double`）。
 
-祝您考試順利！
+2.  **建立 `SalaryWorker.java` (子類別)**
+    *   繼承自 `Employee`。
+    *   包含一個私有屬性 `monthlySalary` (月薪, `double`)。
+    *   提供建構子，需傳入姓名和月薪。
+    *   覆寫 (`@Override`) `calculateSalary()` 方法，直接回傳 `monthlySalary`。
+
+3.  **建立 `HourlyWorker.java` (子類別)**
+    *   繼承自 `Employee`。
+    *   包含私有屬性 `hourlyRate` (時薪, `double`) 和 `hoursWorked` (工時, `int`)。
+    *   提供建構子，需傳入姓名、時薪和工時。
+    *   覆寫 (`@Override`) `calculateSalary()` 方法，回傳 `hourlyRate * hoursWorked` 的計算結果。
+
+### 測試範例
+
+```java
+// Main.java (for testing)
+public class Main {
+    public static void main(String[] args) {
+        Employee manager = new SalaryWorker("John Doe", 60000);
+        Employee partTimer = new HourlyWorker("Jane Smith", 200, 80);
+
+        // 利用多型
+        Employee[] employees = {manager, partTimer};
+
+        for (Employee emp : employees) {
+            System.out.printf("Employee: %s, Salary: %.2f%n", emp.name, emp.calculateSalary());
+        }
+    }
+}
+// 預期輸出:
+// Employee: John Doe, Salary: 60000.00
+// Employee: Jane Smith, Salary: 16000.00
+```
+
+---
+
+## 第三題：訊息通知系統（介面）
+
+### 題目說明
+
+請設計一個通用的訊息通知系統。系統需要能夠透過多種方式（如 Email, SMS）發送訊息。請使用「介面」來達成此設計。
+
+### 實作要求
+
+1.  **建立 `Notifiable.java` (介面)**
+    *   定義一個公開的 `interface`。
+    *   包含一個抽象方法 `send(String message)`。
+
+2.  **建立 `EmailNotifier.java` (實作類別)**
+    *   實作 (`implements`) `Notifiable` 介面。
+    *   `send` 方法的實作是在控制台印出 `"Sending Email: " + message`。
+
+3.  **建立 `SmsNotifier.java` (實作類別)**
+    *   實作 (`implements`) `Notifiable` 介面。
+    *   `send` 方法的實作是在控制台印出 `"Sending SMS: " + message`。
+
+4.  **建立 `NotificationService.java` (服務類別)**
+    *   提供一個靜態 (`static`) 方法 `sendNotification(Notifiable notifier, String message)`。
+    *   此方法會呼叫傳入的 `notifier` 物件的 `send` 方法來發送訊息。
+
+### 測試範例
+
+```java
+// Main.java (for testing)
+public class Main {
+    public static void main(String[] args) {
+        // 建立不同的通知器
+        Notifiable email = new EmailNotifier();
+        Notifiable sms = new SmsNotifier();
+
+        // 使用通知服務發送訊息
+        NotificationService.sendNotification(email, "Your order has been shipped.");
+        NotificationService.sendNotification(sms, "Your verification code is 12345.");
+    }
+}
+// 預期輸出:
+// Sending Email: Your order has been shipped.
+// Sending SMS: Your verification code is 12345.
+```
