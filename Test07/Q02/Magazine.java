@@ -8,6 +8,6 @@ class Magazine extends Publication{
 	}
 
 	public void displayInfo(){
-		System.out.printf("[Magazine] ISBN: %s,  Title: %s, Author: %s, Issue: %s\n", this.getIsbn(), this.getTitle(), this.getAuthor(), this.issueNumber);
+		System.out.printf("[Magazine] ISBN: %s, Title: %s, Author: %s, Issue: %s\n", this.getIsbn(), this.getTitle(), this.getAuthor(), this.issueNumber);
 	}
 }

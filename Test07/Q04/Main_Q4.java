@@ -8,16 +8,17 @@ class Main_Q4{
 		Inventory<Product> inv = new Inventory<>();
 		inv.addProduct(new Product("P001", "Mouse", 500));
 		inv.addProduct(new Product("P002", "Laptop", 1500));
-		inv.addProduct(new Product("P003", "Keyboard", 999));
-		inv.addProduct(new Product("P004", "QQQ", 1699));
+		inv.addProduct(new Product("P003", "Keyboard", 80));
 
-		inv.getAllProducts().stream()
+		System.out.println("Products with price > 1000:");
+		List<Product> expensiveProducts = inv.getAllProducts().stream()
 			.filter(x -> x.getPrice() > 1000)
-			.forEach(x -> System.out.println(x.toString()));
+			.collect(Collectors.toList());
+		System.out.println(expensiveProducts.toString());
 
 
 		double sum =  inv.getAllProducts().stream().mapToDouble(Product::getPrice).reduce(0, Double::sum);
-		System.out.println(sum);
+		System.out.println("\nTotal inventory value: " + sum + "\n");
 
 		List<String> s = inv.getAllProducts().stream().sorted((a, b) -> a.getName().compareTo(b.getName())).map(Product::getName).collect(Collectors.toList());
 		System.out.println("Product names sorted:");

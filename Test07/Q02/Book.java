@@ -6,6 +6,6 @@ class Book extends Publication{
 	}
 
 	public void displayInfo(){
-		System.out.printf("[Book] ISBN: %s,  Title: %s, Author: %s\n", this.getIsbn(), this.getTitle(), this.getAuthor());
+		System.out.printf("[Book] ISBN: %s, Title: %s, Author: %s\n", this.getIsbn(), this.getTitle(), this.getAuthor());
 	}
 }

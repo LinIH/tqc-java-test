@@ -1,8 +1,8 @@
 
 class Product{
-	public String id;
-	public String name;
-	public double price;
+	private String id;
+	private String name;
+	private double price;
 
 	Product(String id, String name, double price){
 		this.id = id;
