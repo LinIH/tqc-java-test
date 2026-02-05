@@ -1,87 +1,143 @@
-# Java 程式設計待加強知識點
+# TQC Java 17 物件導向程式設計 重點知識整理
 
-根據您完成的練習題與程式碼審查的結果，以下是建議您可以進一步深入學習和鞏固的知識領域。掌握這些要點將能讓您的程式碼更健壯、更專業、更易於維護。
-
----
-
-### 1. 資料型別與數值精度 (Data Types & Numerical Precision)
-
-這是本次審查中最常出現的問題。精確地處理數字是程式設計的基礎。
-
-- **整數除法 vs. 浮點數除法**:
-  - **問題**: 在 `Q110` 和 `Q610` 中，出現了 `int / int` 的情況（例如 `5 / 2` 或 `yearPay / 12`），這會導致結果被無條件捨去小數（得到 `2` 而非 `2.5`）。
-  - **建議**: 當您預期結果可能包含小數時，務必確保運算式中至少有一個數是浮點數（`double` 或 `float`），例如 `5 / 2.0` 或 `(double)yearPay / 12`，以觸發浮點數除法。
-
-- **數值溢位 (Integer Overflow)**:
-  - **問題**: 在 `Q402`（階乘）中，`13!` 的結果就已經超過 `int` 型別的最大值，導致計算結果錯誤。
-  - **建議**: 在處理可能會快速增長的數值（如階乘、費波那契數列）時，要對資料型別的範圍有概念。當 `int` 不足時，應立即考慮使用 `long`。如果 `long` 也不足，Java 提供了 `BigInteger` 類別來處理任意大的整數。
-
-- **金融與費用計算**:
-  - **問題**: 在 `Q606` 和 `Q610` 的薪資加總中，使用 `int` 型別來累加 `double` 型別的薪資，會導致精度損失。
-  - **建議**: 所有涉及金錢或需要精密小數的計算，都應優先使用 `double` 型別。
-
-### 2. 物件導向設計原則 (Object-Oriented Design Principles)
-
-您在 `Q606` 和 `Q610` 中展現了良好的 OOP 基礎，但可以在以下原則上做得更好。
-
-- **指令與查詢分離 (Command-Query Separation, CQS)**:
-  - **問題**: `Q610` 的 `monthTaxed()` 方法既回傳了稅額（查詢），又修改了靜態的總稅額 `sum`（指令）。這導致了嚴重的副作用，每次呼叫都會意外地修改全局狀態，造成重複計算。
-  - **建議**: 嚴格區分「只回傳資料而不改變狀態」的方法和「只改變狀態而不回傳資料」的方法。一個方法最好只做一件事。
-
-- **封裝 (Encapsulation)**:
-  - **問題**: `Q606` 的 `Teacher` 類別中的屬性使用了預設的 package-private 存取權限。
-  - **建議**: 養成將類別屬性設為 `private` 或 `protected` 的習慣。`private` 代表只有類別內部能存取，`protected` 代表類別內部及其子類別可以存取。這能防止外部程式碼意外地修改物件狀態。
-
-- **DRY (Don't Repeat Yourself)**:
-  - **問題**: `Q606` 的 `FullTime` 和 `PartTime` 類別中存在完全相同的 `getAfterTaxIns()` 方法。
-  - **建議**: 將重複的程式碼提升到父類別中。如果邏輯對所有子類別都適用，它就應該存在於父類別。
-
-- **`static` 的正確使用**:
-  - **問題**: `Q610` 的 `getAverageTax()` 方法只操作靜態變數，但卻被定義為實例方法，並透過 `employees.get(0).getAverageTax()` 這樣奇怪的方式呼叫。
-  - **建議**: 只依賴靜態變數的工具性方法應該被定義為 `static` 方法，並透過類別名稱直接呼叫（`Employee.getAverageTax()`）。
-
-### 3. 邏輯的完整性與邊界條件 (Logical Completeness & Edge Cases)
-
-- **問題**: 在 `Q202` 的兩數比較和 `Q606`, `Q610` 的薪資比較中，都只處理了 `>` 的情況，而忽略了兩者相等 (`==`) 的可能性。
-- **建議**: 在進行比較時，永遠要考慮「大於」、「小於」和「等於」三種情況，確保邏輯的完整性。
-
-### 4. 演算法的正確實作 (Correct Algorithm Implementation)
-
-- **問題**:
-  1. `Q508` 中，您實作的排序演算法並非題目要求的「氣泡排序」。
-  2. `Q402` 中，您實作的遞迴並非題目要求的「尾遞迴」。
-- **建議**: 在實作特定演算法或資料結構時，務必先清晰地理解其定義和運作步驟。例如，氣泡排序的關鍵是「相鄰元素比較」，而尾遞迴的關鍵是「遞迴呼叫是函式最後執行的動作」。
-
-### 5. 錯誤與例外處理 (Error & Exception Handling)
-
-- **問題**:
-  1. `Q310` 中，捕捉到輸入格式錯誤後直接 `break`，導致程式流程錯誤。
-  2. `Q610` 中，在迴圈內部 `try-catch` 例外，使得程式在拋出「總薪資超額」的例外後仍然繼續執行。
-- **建議**:
-  1. 在需要使用者重新輸入的場景，`catch` 到例外後應提示使用者、清除無效輸入，並使用 `continue` 繼續下一輪迴圈。
-  2. 思考例外的目的。如果一個例外代表整個操作應被終止，`try-catch` 區塊就應該放在迴圈的外部。
+這份文件旨在整理 TQC Java 17 物件導向認證考試的核心知識點，幫助您聚焦複習方向。
 
 ---
 
-### 6. 效能與程式碼品質 (Performance & Code Quality)
+## 1. Java 基礎 (Foundation)
 
-在 `Test01` 的練習中，您的程式碼功能都已達成，我們可以開始關注更高層次的問題：如何讓程式跑得更快、寫得更專業。
+在深入物件導向之前，必須先穩固以下基礎：
 
-- **`static` 關鍵字的副作用 (Side Effects of `static`)**:
-  - **問題**: 在 `Q03` 的 `ShippingDB` 中，`HashMap` 被宣告為 `static`。這會導致所有 `ShippingDB` 的實例（instances）共享同一個資料庫，可能引發意想不到的資料共用問題。
-  - **建議**: 深入理解 `static` 的意義——它屬於「類別」本身，而不是某個「物件」。當物件應該各自擁有自己的資料時（例如，每個 `ShippingDB` 應該有自己的包裹清單），其欄位就不應該是 `static` 的。
+### 1.1. 基礎語法與資料型別
+- **基本資料型別 (Primitive Types)**: `int`, `double`, `char`, `boolean`, `long`, `short`, `float`, `byte`。
+- **參考資料型別 (Reference Types)**: 物件、陣列、`String`。
+- **變數宣告與 `var`**: 了解如何宣告變數，並知道 Java 10 引入的 `var` 只能用於區域變數的型別推斷。
+- **字串 `String`**:
+    - `String` 的不變性 (Immutability)。
+    - 常用的方法，如 `equals()`, `substring()`, `length()`, `toUpperCase()` 等。
 
-- **演算法效率 (Algorithmic Efficiency)**:
-  - **問題**: 在 `Q03` 的 `findHeaviestPackage` 方法中，您在 `for` 迴圈內部使用了 `shipping.get()`，這會增加不必要的查詢次數。
-  - **建議**: 在設計迴圈操作時，思考如何用最少的步驟完成任務。例如，可以設定一個變數來「記住」當前找到的最佳目標（如此處的最重包裹），避免在迴圈中進行重複或昂貴的查找操作。
+### 1.2. 運算子 (Operators)
+- **算術運算子**: `+`, `-`, `*`, `/`, `%`。
+- **關係運算子**: `==`, `!=`, `>`, `<`, `>=`, `<=`。
+- **邏輯運算子**: `&&` (AND), `||` (OR), `!` (NOT)。
+- **遞增/遞減運算子**: `++`, `--`。
 
-- **避免重複計算 (Avoiding Redundant Computations)**:
-  - **問題**: 在 `Q03` 的 `main` 方法中，`shipping.findHeaviestPackage()` 這個需要遍歷集合的方法被呼叫了數次。
-  - **建議**: 如果一個方法的計算結果在短時間內不會改變，且該方法計算成本較高，應先將其結果儲存在一個區域變數中，然後重複使用該變數。這是一個簡單卻極為有效的效能最佳化手段。
-
-- **程式碼簡潔性 (Code Cleanliness)**:
-  - **問題**: 在 `OversizePackage` 類別中，宣告了 `overweightfee` 變數但從未使用。
-  - **建議**: 定期審視並移除「無用程式碼」（dead code），包括未使用的變數、方法或類別。這能讓程式碼更易於閱讀和維護。
+### 1.3. 流程控制 (Control Flow)
+- **條件判斷**: `if`, `if-else`, `if-else-if`。
+- **多重選擇**:
+    - `switch` 語句 (傳統用法)。
+    - **Switch 表示式 (Java 14+)**: 使用 `->` 和 `yield` 返回值，語法更簡潔。
+- **迴圈**: `for`, `while`, `do-while`，以及 `for-each` 迴圈。
+- **中斷流程**: `break`, `continue`。
 
 ---
-將以上幾點融會貫通，您的程式設計能力將會有質的飛躍。加油！
+
+## 2. 物件導向核心 (Core OOP Concepts)
+
+這是考試的絕對核心，必須熟練。
+
+### 2.1. 類別與物件 (Classes and Objects)
+- **類別定義**: 如何使用 `class` 關鍵字定義一個類別，包含屬性 (Fields) 和方法 (Methods)。
+- **物件的建立與使用**: 使用 `new` 關鍵字建立物件實體 (Instance)。
+- **建構子 (Constructor)**:
+    - 預設建構子與自訂建構子。
+    - **建構子多載 (Overloading)**: 擁有多個不同參數列表的建構子。
+- **`this` 關鍵字**: 代表「當前物件」的參考。
+
+### 2.2. 封裝 (Encapsulation)
+- **存取修飾詞 (Access Modifiers)**: `public`, `protected`, `private` 以及預設 (package-private) 的可見範圍。
+- **Getter/Setter 方法**: 提供對私有屬性的可控存取。
+
+### 2.3. 繼承 (Inheritance)
+- **`extends` 關鍵字**: 類別之間的繼承關係。
+- **`super` 關鍵字**: 用於呼叫父類別的建構子或方法。
+- **方法覆寫 (Method Overriding)**:
+    - 子類別重新定義父類別的方法。
+    - `@Override` 標註的重要性。
+- **`Object` 類別**: 所有 Java 類別的根父類別，及其 `equals()`, `hashCode()`, `toString()` 等重要方法。
+
+### 2.4. 多型 (Polymorphism)
+- **向上轉型 (Upcasting)**: `父類別參考 = new 子類別物件()`。
+- **`instanceof` 運算子**: 檢查物件的真實型別。
+- **`instanceof` 的模式匹配 (Java 16+)**: 在 `if` 條件中直接宣告變數並轉型，簡化語法。
+    ```java
+    // 舊寫法
+    if (obj instanceof String) {
+        String s = (String) obj;
+        // ... use s
+    }
+    // 新寫法
+    if (obj instanceof String s) {
+        // ... use s directly
+    }
+    ```
+
+---
+
+## 3. 進階物件導向 (Advanced OOP)
+
+### 3.1. 抽象類別與介面 (Abstract Classes and Interfaces)
+- **抽象類別 (`abstract class`)**:
+    - 不能被實體化。
+    - 可以包含抽象方法 (`abstract` method) 和具體方法。
+- **介面 (`interface`)**:
+    - 預設為 `public abstract` 方法（Java 8 前）。
+    - Java 8 後可包含 `default` 方法和 `static` 方法。
+- **兩者比較**: 何時使用抽象類別，何時使用介面。
+
+### 3.2. `final` 與 `static` 關鍵字
+- **`final`**:
+    - **final 變數**: 常數，值不能被改變。
+    - **final 方法**: 不能被子類別覆寫。
+    - **final 類別**: 不能被繼承。
+- **`static`**:
+    - **static 變數**: 類別變數，所有物件共享。
+    - **static 方法**: 類別方法，不需建立物件即可呼叫。
+
+---
+
+## 4. Java 17 特性與現代語法
+
+這些是新版 Java 的重要特性，在 TQC 考試中可能出現。
+
+### 4.1. Record (Java 16+)
+- **用途**: 快速建立不變的 (immutable) 資料載體類別。
+- **特性**: 編譯器會自動產生建構子、`equals()`、`hashCode()`、`toString()` 以及 getter 方法。
+- **語法**: `public record Point(int x, int y) {}`
+
+### 4.2. Sealed Classes (Java 17)
+- **用途**: 限制一個類別或介面能被哪些其他的類別或介面繼承或實作。
+- **關鍵字**: `sealed`, `permits`, `non-sealed`。
+- **語法**: `public sealed class Shape permits Circle, Square {}`
+
+---
+
+## 5. 核心 API 與函式庫
+
+### 5.1. 例外處理 (Exception Handling)
+- **`try-catch-finally`**: 捕捉並處理例外。`finally` 區塊無論如何都會執行。
+- **`throws`**: 在方法簽章上宣告可能拋出的例外。
+- **Checked Exception vs. Unchecked Exception (Runtime Exception)**: 兩者的區別與處理方式。
+
+### 5.2. 泛型 (Generics)
+- **用途**: 提供編譯時期的型別安全。
+- **語法**: 在集合或自訂類別中使用 `<T>` 或 `<E>`。
+
+### 5.3. 集合框架 (Collections Framework)
+- **核心介面**: `List`, `Set`, `Map` 的特性與差異。
+    - `List`: 有序、可重複 (e.g., `ArrayList`)。
+    - `Set`: 無序（通常）、不可重複 (e.g., `HashSet`)。
+    - `Map`: 鍵值對儲存，鍵不可重複 (e.g., `HashMap`)。
+
+### 5.4. Stream API
+- **概念**: 對集合進行宣告式的、鏈式的操作。
+- **中間操作 (Intermediate Operations)**:
+    - `filter()`: 篩選。
+    - `map()`: 轉換。
+    - `sorted()`: 排序。
+    - `flatMap()`: 扁平化。
+- **終端操作 (Terminal Operations)**:
+    - `collect()`: 收集結果 (e.g., `Collectors.toList()`, `Collectors.groupingBy()`)。
+    - `forEach()`: 迭代。
+    - `findFirst()`, `anyMatch()`: 短路操作。
+    - `reduce()`: 聚合。
